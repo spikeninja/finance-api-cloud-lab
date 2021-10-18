@@ -12,7 +12,7 @@ services:
     env_file:
       - dev.env
     ports:
-      - 8000:8022
+      - 8022:8000
     depends_on:
       - postgres_db
 
