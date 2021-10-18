@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./web/Dockerfile
+    volumes:
+      - ./web/:/usr/src/app/
+    container_name: cloud_api_web_dev
+    command: uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    env_file:
+      - dev.env
+    ports:
+      - 8000:8022
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    image: postgres:13-alpine
+    container_name: cloud_pgsql_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./misc/createdb.sql:/misc/createdb.sql
+    env_file:
+      - dev.env
+
+volumes:
+  postgres_data:
